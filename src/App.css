@@ -1,38 +1,77 @@
-.App {
-  text-align: center;
-}
+/* src/styles/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Custom animations that extend Tailwind's built-in ones */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.animate-float {
+  animation: float 5s ease-in-out infinite;
 }
 
-.App-link {
-  color: #61dafb;
+/* Scroll reveal animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom gradient text for headings */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary-500 to-secondary-500 text-transparent bg-clip-text;
+}
+
+/* Custom styling for buttons */
+.btn-primary {
+  @apply bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-1 transition-all;
+}
+
+.btn-secondary {
+  @apply border border-primary-500 text-primary-500 px-6 py-2 rounded-full hover:bg-primary-50 transition-all;
+}
+
+/* Glowing effect for highlighted elements */
+.glow {
+  @apply relative;
+}
+
+.glow::before {
+  content: '';
+  @apply absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg blur opacity-30 transition-opacity;
+  z-index: -1;
+}
+
+.glow:hover::before {
+  @apply opacity-50;
+}
+/* Add these styles to your CSS */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }

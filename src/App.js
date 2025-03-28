@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/layouts/Navbar';
+import Footer from './components/layouts/Footer';
+import SinglePageHome from './components/layouts/SinglePageHome';
 
-function App() {
+// Main App Component
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="min-h-screen flex flex-col bg-black text-white">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<SinglePageHome />} />
+            {/* Redirect all other routes to the homepage with appropriate section anchor */}
+            <Route path="/about" element={<Navigate to="/#about" replace />} />
+            <Route path="/services" element={<Navigate to="/#services" replace />} />
+            <Route path="/contact" element={<Navigate to="/#contact" replace />} />
+            {/* Fallback for any other routes */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
