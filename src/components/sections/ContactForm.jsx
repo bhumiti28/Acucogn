@@ -1,12 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 
+// Initialize EmailJS with your public key
+emailjs.init("AHgYK2RmasvUamRR6");
+
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const formRef = useRef();
 
   const { 
     register, 
@@ -20,27 +22,23 @@ const ContactForm = () => {
     setSubmitStatus(null);
 
     try {
-      // Using your actual EmailJS values
-      const serviceId = 'service_a6gev43';
-      const templateId = 'template_cy3qvkq';
-      const publicKey = 'AHgYK2RmasvUamRR6';
-      
-      const result = await emailjs.sendForm(
-        serviceId,
-        templateId,
-        formRef.current,
-        publicKey
+      const response = await emailjs.send(
+        'service_a6gev43',
+        'template_cy3qvkq',
+        {
+          user_name: data.user_name,
+          user_email: data.user_email,
+          user_phone: data.user_phone || 'Not provided',
+          message: data.message
+        }
       );
-      
-      if (result.text === 'OK') {
-        setSubmitStatus('success');
-        reset(); // Clear form after successful submission
-      } else {
-        setSubmitStatus('error');
-      }
+
+      console.log('SUCCESS!', response.status, response.text);
+      setSubmitStatus('success');
+      reset();
     } catch (error) {
+      console.log('FAILED...', error);
       setSubmitStatus('error');
-      console.error('Submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -58,7 +56,7 @@ const ContactForm = () => {
           Contact Us
         </h2>
 
-        <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name Input */}
           <div>
             <label htmlFor="user_name" className="block mb-2 text-sm text-gray-300">
@@ -67,7 +65,6 @@ const ContactForm = () => {
             <input 
               type="text" 
               id="user_name"
-              name="user_name" 
               {...register('user_name', { 
                 required: 'Name is required',
                 minLength: {
@@ -97,7 +94,6 @@ const ContactForm = () => {
             <input 
               type="email" 
               id="user_email"
-              name="user_email" 
               {...register('user_email', { 
                 required: 'Email is required',
                 pattern: {
@@ -127,13 +123,7 @@ const ContactForm = () => {
             <input 
               type="tel" 
               id="user_phone"
-              name="user_phone" 
-              {...register('user_phone', { 
-                pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: 'Invalid phone number (10 digits required)'
-                }
-              })}
+              {...register('user_phone')}
               className={`w-full p-3 rounded-md bg-gray-800 border ${
                 errors.user_phone 
                   ? 'border-red-500 focus:ring-red-500' 
@@ -155,7 +145,6 @@ const ContactForm = () => {
             </label>
             <textarea 
               id="message"
-              name="message" 
               {...register('message', { 
                 required: 'Message is required',
                 minLength: {
