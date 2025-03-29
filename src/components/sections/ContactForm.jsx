@@ -3,9 +3,6 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 
-// Initialize EmailJS with your public key
-emailjs.init("AHgYK2RmasvUamRR6");
-
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -21,23 +18,31 @@ const ContactForm = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    // Create template parameters object
+    const templateParams = {
+      from_name: data.user_name,
+      from_email: data.user_email,
+      phone: data.user_phone || 'Not provided',
+      message: data.message
+    };
+
     try {
+      // Make sure these match exactly with your EmailJS account
       const response = await emailjs.send(
         'service_a6gev43',
         'template_cy3qvkq',
-        {
-          user_name: data.user_name,
-          user_email: data.user_email,
-          user_phone: data.user_phone || 'Not provided',
-          message: data.message
-        }
+        templateParams,
+        'AHgYK2RmasvUamRR6'
       );
 
-      console.log('SUCCESS!', response.status, response.text);
-      setSubmitStatus('success');
-      reset();
+      if (response.status === 200) {
+        setSubmitStatus('success');
+        reset();
+      } else {
+        setSubmitStatus('error');
+      }
     } catch (error) {
-      console.log('FAILED...', error);
+      console.error('Error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -66,11 +71,7 @@ const ContactForm = () => {
               type="text" 
               id="user_name"
               {...register('user_name', { 
-                required: 'Name is required',
-                minLength: {
-                  value: 2,
-                  message: 'Name must be at least 2 characters'
-                }
+                required: 'Name is required'
               })}
               className={`w-full p-3 rounded-md bg-gray-800 border ${
                 errors.user_name 
@@ -95,11 +96,7 @@ const ContactForm = () => {
               type="email" 
               id="user_email"
               {...register('user_email', { 
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address'
-                }
+                required: 'Email is required'
               })}
               className={`w-full p-3 rounded-md bg-gray-800 border ${
                 errors.user_email 
@@ -131,11 +128,6 @@ const ContactForm = () => {
               } focus:outline-none focus:ring-2`}
               placeholder="Enter your phone number"
             />
-            {errors.user_phone && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.user_phone.message}
-              </p>
-            )}
           </div>
 
           {/* Message Textarea */}
@@ -146,11 +138,7 @@ const ContactForm = () => {
             <textarea 
               id="message"
               {...register('message', { 
-                required: 'Message is required',
-                minLength: {
-                  value: 10,
-                  message: 'Message must be at least 10 characters'
-                }
+                required: 'Message is required'
               })}
               rows="4"
               className={`w-full p-3 rounded-md bg-gray-800 border ${
