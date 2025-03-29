@@ -19,11 +19,19 @@ const ContactForm = () => {
 
     try {
       // Send form data to your backend API
-      const response = await fetch('http://localhost:3000/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      try {
+        // Update the API endpoint to match your server deployment
+        // For local development:
+        const apiUrl = process.env.NODE_ENV === 'development' 
+          ? 'http://localhost:3000/api/contact'
+          : 'https://acucogn.vercel.app/contact';
+
+          try {
+            // Update the API endpoint to match your server deployment
+            // For local development:
+            const apiUrl = process.env.NODE_ENV === 'development' 
+              ? 'http://localhost:3000/api/contact'
+              : 'https://acucogn.vercel.app/api/contact';
 
       const result = await response.json();
       

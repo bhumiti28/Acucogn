@@ -69,11 +69,18 @@ const Footer = () => {
     
     try {
       // Send to backend API
-      const response = await fetch('https://yourdomain.com/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
+      const apiUrl = process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:3000/api/subscribe'
+      : 'https://acucogn.vercel.app/api/subscribe';
+      
+    // Send to backend API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+      credentials: 'include' // Include cookies if using sessions
+    });
+     
 
       const result = await response.json();
       

@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Configure CORS - replace with your actual domain
 app.use(cors({
-  origin: ['https://yourdomain.com', 'https://www.yourdomain.com', 'http://localhost:3000'],
+  origin: ['https://acucogn.vercel.app', 'http://localhost:3000', 'http://localhost:3001'],
   methods: ['GET', 'POST'],
   credentials: true
 }));
