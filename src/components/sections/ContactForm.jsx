@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,24 +17,25 @@ const ContactForm = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Create template parameters object
-    const templateParams = {
-      from_name: data.user_name,
-      from_email: data.user_email,
-      phone: data.user_phone || 'Not provided',
-      message: data.message
-    };
-
     try {
-      // Make sure these match exactly with your EmailJS account
-      const response = await emailjs.send(
-        'service_a6gev43',
-        'template_cy3qvkq',
-        templateParams,
-        'AHgYK2RmasvUamRR6'
-      );
+      // Using FormSubmit service - no API keys needed
+      const response = await fetch('https://formsubmit.co/ajax/bhumitygohel2811@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || 'Not provided',
+          message: data.message
+        })
+      });
 
-      if (response.status === 200) {
+      const result = await response.json();
+      
+      if (result.success === 'true' || result.success === true) {
         setSubmitStatus('success');
         reset();
       } else {
@@ -64,68 +64,64 @@ const ContactForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name Input */}
           <div>
-            <label htmlFor="user_name" className="block mb-2 text-sm text-gray-300">
+            <label htmlFor="name" className="block mb-2 text-sm text-gray-300">
               Full Name
             </label>
             <input 
               type="text" 
-              id="user_name"
-              {...register('user_name', { 
+              id="name"
+              {...register('name', { 
                 required: 'Name is required'
               })}
               className={`w-full p-3 rounded-md bg-gray-800 border ${
-                errors.user_name 
+                errors.name 
                   ? 'border-red-500 focus:ring-red-500' 
                   : 'border-gray-700 focus:border-purple-500 focus:ring-purple-500'
               } focus:outline-none focus:ring-2`}
               placeholder="Enter your full name"
             />
-            {errors.user_name && (
+            {errors.name && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.user_name.message}
+                {errors.name.message}
               </p>
             )}
           </div>
 
           {/* Email Input */}
           <div>
-            <label htmlFor="user_email" className="block mb-2 text-sm text-gray-300">
+            <label htmlFor="email" className="block mb-2 text-sm text-gray-300">
               Email Address
             </label>
             <input 
               type="email" 
-              id="user_email"
-              {...register('user_email', { 
+              id="email"
+              {...register('email', { 
                 required: 'Email is required'
               })}
               className={`w-full p-3 rounded-md bg-gray-800 border ${
-                errors.user_email 
+                errors.email 
                   ? 'border-red-500 focus:ring-red-500' 
                   : 'border-gray-700 focus:border-purple-500 focus:ring-purple-500'
               } focus:outline-none focus:ring-2`}
               placeholder="Enter your email"
             />
-            {errors.user_email && (
+            {errors.email && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.user_email.message}
+                {errors.email.message}
               </p>
             )}
           </div>
 
           {/* Phone Number Input */}
           <div>
-            <label htmlFor="user_phone" className="block mb-2 text-sm text-gray-300">
+            <label htmlFor="phone" className="block mb-2 text-sm text-gray-300">
               Phone Number (Optional)
             </label>
             <input 
               type="tel" 
-              id="user_phone"
-              {...register('user_phone')}
-              className={`w-full p-3 rounded-md bg-gray-800 border ${
-                errors.user_phone 
-                  ? 'border-red-500 focus:ring-red-500' 
-                  : 'border-gray-700 focus:border-purple-500 focus:ring-purple-500'
-              } focus:outline-none focus:ring-2`}
+              id="phone"
+              {...register('phone')}
+              className="w-full p-3 rounded-md bg-gray-800 border border-gray-700 focus:border-purple-500 focus:ring-purple-500 focus:outline-none focus:ring-2"
               placeholder="Enter your phone number"
             />
           </div>
