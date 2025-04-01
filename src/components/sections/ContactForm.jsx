@@ -19,7 +19,7 @@ const ContactForm = () => {
 
     try {
       // Using FormSubmit service - no API keys needed
-      const response = await fetch('https://formsubmit.co/ajax/sales@acucogn.com', {
+      const response = await fetch('https://formsubmit.co/ajax/gohelbhumity28@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,20 +29,34 @@ const ContactForm = () => {
           name: data.name,
           email: data.email,
           phone: data.phone || 'Not provided',
-          message: data.message
+          message: data.message,
+          _subject: "New Contact Form Submission",
+          _captcha: "false",
+          _template: "box",
+          _next: "https://yourdomain.com/thank-you", // Replace with your actual domain
+          _webhook: "https://yourdomain.com/webhook", // Optional: for advanced integrations
+          _honey: "", // Honeypot spam prevention
         })
       });
 
+      console.log("Response status:", response.status); // Debug log
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
       const result = await response.json();
+      console.log("Response data:", result); // Debug log
       
       if (result.success === 'true' || result.success === true) {
         setSubmitStatus('success');
         reset();
       } else {
         setSubmitStatus('error');
+        console.error("Form submission failed:", result);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error details:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -61,6 +75,18 @@ const ContactForm = () => {
           Contact Us
         </h2>
 
+        {/* Regular form for direct FormSubmit activation (hidden) */}
+        <div className="hidden">
+          <form action="https://formsubmit.co/gohelbhumity28@gmail.com" method="POST">
+            <input type="text" name="name" />
+            <input type="email" name="email" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="https://www.acucogn.com/thank-you" />
+            <button type="submit">Send</button>
+          </form>
+        </div>
+
+        {/* React Hook Form for actual use */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name Input */}
           <div>
