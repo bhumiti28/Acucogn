@@ -5,7 +5,7 @@ const About = () => {
     <section className="py-20 bg-gradient-to-b from-black to-gray-900">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
               About Acugon
             </h2>
@@ -39,14 +39,17 @@ const About = () => {
                 <div className="text-gray-400">Efficiency Increase</div>
               </div>
             </div>
-          </div>            
             
-            {/* Decorative elements */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full filter blur-2xl"></div>
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full filter blur-2xl"></div>
+            {/* Decorative elements now properly contained within parent div */}
+            <div className="absolute -top-10 right-0 w-40 h-40 bg-blue-500/10 rounded-full filter blur-2xl"></div>
+            <div className="absolute -bottom-10 left-0 w-40 h-40 bg-purple-500/10 rounded-full filter blur-2xl"></div>
+          </div>
+          {/* Second column for layout balance */}
+          <div className="order-1 lg:order-2">
+            {/* Content for second column if needed */}
           </div>
         </div>
-      
+      </div>
     </section>
   );
 };

@@ -49,7 +49,7 @@ const Footer = () => {
     window.location.href = 'mailto:sales@acucogn.com';
   };
 
-  // Handle newsletter subscription
+  // Handle newsletter subscription using FormSubmit
   const handleSubscribe = async (e) => {
     e.preventDefault();
     
@@ -68,23 +68,23 @@ const Footer = () => {
     setSubscribeStatus(null);
     
     try {
-      // Send to backend API
-      const apiUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000/api/subscribe'
-      : 'https://acucogn.vercel.app/api/subscribe';
-      
-    // Send to backend API
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-      credentials: 'include' // Include cookies if using sessions
-    });
-     
+      // Using FormSubmit service - no API keys needed
+      const response = await fetch('https://formsubmit.co/ajax/sales@acucogn.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          message: 'Newsletter Subscription Request',
+          formType: 'newsletter'
+        })
+      });
 
       const result = await response.json();
       
-      if (result.success) {
+      if (result.success === 'true' || result.success === true) {
         setSubscribeStatus('success');
         setEmail('');
       } else {
@@ -158,7 +158,7 @@ const Footer = () => {
           <div className="flex flex-col items-center mb-6 md:mb-0">
             <h3 className="text-lg font-bold mb-4 bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">Socials</h3>
             <div className="flex space-x-4">
-              <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/company/acucogn/" target="_blank" rel="noopener noreferrer">
                 <FaLinkedin size={24} className="hover:text-primary-500 transition" />
               </a>
               <a href="https://www.instagram.com/acucognai" target="_blank" rel="noopener noreferrer">

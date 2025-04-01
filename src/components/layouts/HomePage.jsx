@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import About from '../sections/About';
-import Services from '../sections/Services';
-import Contact from '../sections/Contact';
-import Hero from '../sections/Hero';
 import AnimatedRobot from './AnimatedRobot';
 
 const HomePage = ({ scrollTo }) => {

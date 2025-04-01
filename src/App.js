@@ -8,9 +8,9 @@ import SinglePageHome from './components/layouts/SinglePageHome';
 const App = () => {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-black text-white">
+      <div className="min-h-screen flex flex-col bg-black text-white overflow-x-hidden">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow overflow-x-hidden">
           <Routes>
             <Route path="/" element={<SinglePageHome />} />
             {/* Redirect all other routes to the homepage with appropriate section anchor */}

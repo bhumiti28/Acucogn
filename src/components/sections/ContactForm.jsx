@@ -19,7 +19,7 @@ const ContactForm = () => {
 
     try {
       // Using FormSubmit service - no API keys needed
-      const response = await fetch('https://formsubmit.co/ajax/bhumitygohel2811@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/sales@acucogn.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
