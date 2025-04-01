@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaLinkedin, FaInstagram, FaChevronUp } from 'react-icons/fa';
 
 const Footer = () => {
@@ -7,6 +7,7 @@ const Footer = () => {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscribeStatus, setSubscribeStatus] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const formRef = useRef(null);
 
   // Scroll to top functionality
   const scrollToTop = () => {
@@ -49,8 +50,8 @@ const Footer = () => {
     window.location.href = 'mailto:sales@acucogn.com';
   };
 
-  // Handle newsletter subscription using FormSubmit
-  const handleSubscribe = async (e) => {
+  // Handle newsletter subscription using direct FormSubmit method
+  const handleSubscribe = (e) => {
     e.preventDefault();
     
     // Validate email
@@ -67,36 +68,18 @@ const Footer = () => {
     setIsSubscribing(true);
     setSubscribeStatus(null);
     
-    try {
-      // Using FormSubmit service - no API keys needed
-      const response = await fetch('https://formsubmit.co/ajax/sales@acucogn.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          message: 'Newsletter Subscription Request',
-          formType: 'newsletter'
-        })
-      });
-
-      const result = await response.json();
+    // Use the direct form submission method
+    if (formRef.current) {
+      // Submit the form
+      formRef.current.submit();
       
-      if (result.success === 'true' || result.success === true) {
+      // Show success message and reset form
+      // This will happen immediately before the page redirects
+      setTimeout(() => {
         setSubscribeStatus('success');
         setEmail('');
-      } else {
-        setSubscribeStatus('error');
-        setError('Failed to subscribe. Please try again later.');
-      }
-    } catch (error) {
-      console.error('Subscription error:', error);
-      setSubscribeStatus('error');
-      setError('Failed to subscribe. Please try again later.');
-    } finally {
-      setIsSubscribing(false);
+        setIsSubscribing(false);
+      }, 1000);
     }
   };
 
@@ -180,10 +163,27 @@ const Footer = () => {
             </div>
             <div>
               <h3 className="text-lg font-bold mb-4 bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">Subscribe to Newsletter</h3>
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              
+              {/* Direct FormSubmit method for newsletter */}
+              <form 
+                ref={formRef}
+                action="https://formsubmit.co/gohelbhumity28@gmail.com" 
+                method="POST"
+                onSubmit={handleSubscribe} 
+                className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2"
+                target="_blank" // Opens response in new tab to avoid navigating away
+              >
+                {/* FormSubmit configuration fields */}
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_subject" value="Newsletter Subscription" />
+                <input type="hidden" name="formType" value="newsletter" />
+                <input type="hidden" name="message" value="Newsletter Subscription Request" />
+                <input type="text" name="_honey" style={{ display: 'none' }} />
+                
                 <div className="w-full">
                   <input 
-                    type="email" 
+                    type="email"
+                    name="email" 
                     placeholder="Enter your email" 
                     value={email}
                     onChange={(e) => {
@@ -193,6 +193,7 @@ const Footer = () => {
                     }}
                     className="w-full px-4 py-2 rounded-md bg-[#1E1E1E] text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
                     disabled={isSubscribing}
+                    required
                   />
                   {error && (
                     <p className="text-red-500 text-sm mt-1">{error}</p>
