@@ -19,7 +19,7 @@ const ContactForm = () => {
 
     try {
       // Using FormSubmit service - no API keys needed
-      const response = await fetch('https://formsubmit.co/ajax/gohelbhumity28@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/sales@acucogn.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,8 +33,8 @@ const ContactForm = () => {
           _subject: "New Contact Form Submission",
           _captcha: "false",
           _template: "box",
-          _next: "https://yourdomain.com/thank-you", // Replace with your actual domain
-          _webhook: "https://yourdomain.com/webhook", // Optional: for advanced integrations
+          _next: "https://www.acucogn.com/thank-you", // Replace with your actual domain
+          _webhook: "https://www.acucogn.com/webhook", // Optional: for advanced integrations
           _honey: "", // Honeypot spam prevention
         })
       });
