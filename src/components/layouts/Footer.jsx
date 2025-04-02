@@ -167,7 +167,7 @@ const Footer = () => {
               {/* Direct FormSubmit method for newsletter */}
               <form 
                 ref={formRef}
-                action="https://formsubmit.co/gohelbhumity28@gmail.com" 
+                action="https://formsubmit.co/sales@acucogn.com" 
                 method="POST"
                 onSubmit={handleSubscribe} 
                 className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2"

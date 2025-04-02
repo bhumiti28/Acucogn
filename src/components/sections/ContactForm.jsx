@@ -77,7 +77,7 @@ const ContactForm = () => {
 
         {/* Regular form for direct FormSubmit activation (hidden) */}
         <div className="hidden">
-          <form action="https://formsubmit.co/gohelbhumity28@gmail.com" method="POST">
+          <form action="https://formsubmit.co/sales@acucogn.com" method="POST">
             <input type="text" name="name" />
             <input type="email" name="email" />
             <input type="hidden" name="_captcha" value="false" />

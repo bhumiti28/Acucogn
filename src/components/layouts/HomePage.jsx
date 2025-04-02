@@ -56,12 +56,12 @@ const HomePage = ({ scrollTo }) => {
       boatAnimFrame = (boatAnimFrame + 1) % 100;
       
       // Create moderate sine wave motion
-      const newPosition = Math.sin(boatAnimFrame / 6) * 7; // Adjusted from 5 to 6 for slightly slower movement, amplitude 8 to 7
-      const newWaveHeight = Math.sin(boatAnimFrame / 4) * 5; // Adjusted from 3 to 4, amplitude 6 to 5
+      const newPosition = Math.sin(boatAnimFrame / 6) * 7; 
+      const newWaveHeight = Math.sin(boatAnimFrame / 4) * 5; 
       
       setBoatPosition(newPosition);
       setWaveHeight(newWaveHeight);
-    }, 16); // Changed from 10ms to 16ms (roughly 60fps)
+    }, 16); 
     
     return () => {
       clearInterval(animationInterval);
